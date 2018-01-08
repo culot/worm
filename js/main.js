@@ -35,16 +35,12 @@ function update() {
   nrg1.draw();
   nrg2.update();
   nrg2.draw();
-}
 
-function up() {
-}
-
-function over() {
-}
-
-function out() {
-}
-
-function actionOnClick () {
+  // for debugging purposes
+  if (nrg1.intensity() > nrg2.intensity()) {
+    worm.direction(Direction.LEFT);
+  } else {
+    worm.direction(Direction.RIGHT);
+  }
+  worm.draw();
 }

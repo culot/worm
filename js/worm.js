@@ -5,9 +5,15 @@ class Worm {
     this._x = this._ctx.world.centerX;
     this._y = 20;
     this._energy = 0;
+    this._worm = this._ctx.add.sprite(this._x, this._y, 'worm');
+    this._worm.anchor.setTo(0.5, 0);
+  }
+
+  direction(dir) {
+    this._direction = dir;
   }
 
   draw() {
-    let worm = this._ctx.add.sprite(this._x, this._y, 'worm');
+    this._worm.x += 1 * this._direction;
   }
 }
