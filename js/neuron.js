@@ -6,6 +6,22 @@ class Neuron {
     this._outputs = new Set();
   }
 
+  input(input) {
+    this._inputs.add(input);
+  }
+
+  output(out) {
+    this._outputs.add(out);
+  }
+
+  output() {
+    let outputValue = 0;
+    this._outputs.forEach(function(out) {
+      outputValue += out;
+    });
+    return outputValue;
+  }
+
   isActive() {
     return this._active;
   }

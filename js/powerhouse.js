@@ -15,6 +15,14 @@ class Powerhouse {
     return this._intensity;
   }
 
+  intensity(value) {
+    this._intensity = value;
+  }
+
+  posX() {
+    return this._x;
+  }
+
   updateIntensity() {
     let sign = Math.random() > 0.5 ? 1 : -1;
     let delta = sign * getIntBetween0And(1);

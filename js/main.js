@@ -17,9 +17,13 @@ function create() {
   let background = ctx.add.tileSprite(0, 300, 1600, 1200, 'background');
 
   cave = new Cave(ctx);
-  worm = new Worm(ctx);
   nrg1 = new Powerhouse(ctx, 100, 100);
   nrg2 = new Powerhouse(ctx, ctx.width - 100, 100);
+  worm = new Worm(ctx);
+  worm.energySources([nrg1, nrg2]);
+
+  // Initial conditions
+  worm.energy(5);
 
   cave.draw();
   worm.draw();
@@ -36,11 +40,6 @@ function update() {
   nrg2.update();
   nrg2.draw();
 
-  // for debugging purposes
-  if (nrg1.intensity() > nrg2.intensity()) {
-    worm.direction(Direction.LEFT);
-  } else {
-    worm.direction(Direction.RIGHT);
-  }
+  worm.updateBrain();
   worm.draw();
 }
