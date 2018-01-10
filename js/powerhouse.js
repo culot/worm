@@ -11,10 +11,6 @@ class Powerhouse {
     this._source = new Phaser.Circle(posX, posY, 50);
   }
 
-  intensity() {
-    return this._intensity;
-  }
-
   intensity(value) {
     this._intensity = value;
   }
@@ -26,7 +22,7 @@ class Powerhouse {
   updateIntensity() {
     let sign = Math.random() > 0.5 ? 1 : -1;
     let delta = sign * getIntBetween0And(1);
-    this._intensity = this._intensity + delta;
+    this._intensity += delta;
 
     // Let's bound the intensity between 0 and 9,
     // so that the discrete colouring scheme works properly.
