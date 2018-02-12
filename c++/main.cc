@@ -48,12 +48,13 @@ int main(int argc, char** argv) {
     int ch;
     do {
       LOG(INFO) << "Updating...";
+      Gfx::instance().clear();
       cave->draw();
       nrg1->update();
       nrg1->draw();
       nrg2->update();
       nrg2->draw();
-      w0rm->updateBrain();
+      w0rm->update();
       w0rm->draw();
       Gfx::instance().update();
       std::this_thread::sleep_for(std::chrono::seconds(1));
