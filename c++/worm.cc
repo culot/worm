@@ -26,7 +26,8 @@ EntityPtr Worm::brightestEnergySource() const {
 }
 
 void Worm::draw() {
-  LOG(INFO) << "Drawing worm";
+  LOG(INFO) << "Drawing worm at position (" << position().y() << "," << position().x() << ")";
+  Gfx::instance().drawch(position(), 'W');
 }
 
 void Worm::updateBrain() {
