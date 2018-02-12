@@ -38,6 +38,11 @@ Gfx::~Gfx() {
   endwin();
 }
 
+void Gfx::clear() {
+  wclear(win_);
+  box(win_, 0, 0);
+}
+
 void Gfx::drawstr(const Position& pos, const std::string& str) {
   drawstr(pos.y(), pos.x(), str);
 }

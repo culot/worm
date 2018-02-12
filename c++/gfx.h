@@ -109,6 +109,7 @@ class Gfx {
  public:
   static Gfx& instance() {static Gfx instance_; return instance_;}
 
+  void clear();
   void drawstr(const Position& pos, const std::string& str);
   void drawstr(int y, int x, const std::string& str);
   void drawch(const Position&, const chtype ch);
