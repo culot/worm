@@ -14,24 +14,9 @@
 using namespace worm;
 
 
-CavePtr cave;
-WormPtr w0rm;
-PowerhousePtr nrg1, nrg2;
-
-
 void sigHandler(int signal) {
-  LOG(INFO) << "Received signal [" << signal << "]";
-}
-
-void update() {
-  cave->draw();
-  nrg1->update();
-  nrg1->draw();
-  nrg2->update();
-  nrg2->draw();
-  w0rm->updateBrain();
-  w0rm->draw();
-  std::this_thread::sleep_for(std::chrono::seconds(1));
+  LOG(INFO) << "Received signal [" << signal << "], exiting...";
+  exit(0);
 }
 
 int main(int argc, char** argv) {
@@ -39,6 +24,11 @@ int main(int argc, char** argv) {
 
   std::signal(SIGINT, sigHandler);
 
+  CavePtr cave;
+  WormPtr w0rm;
+  PowerhousePtr nrg1, nrg2;
+
+  LOG(INFO) << "Starting...";
   try {
     cave = std::make_shared<Cave>(1000);
     Position pos;
@@ -57,7 +47,18 @@ int main(int argc, char** argv) {
     nrg1->draw();
     nrg2->draw();
 
-//    std::thread updater(update);
+    for (;;) {
+      LOG(INFO) << "Updating...";
+      cave->draw();
+      nrg1->update();
+      nrg1->draw();
+      nrg2->update();
+      nrg2->draw();
+      w0rm->updateBrain();
+      w0rm->draw();
+      std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+
   } catch (const std::exception& e) {
     LOG(ERROR) << "Aborting due to following error: " << e.what();
     return 1;
