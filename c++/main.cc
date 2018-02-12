@@ -1,4 +1,5 @@
 #include <glog/logging.h>
+#include <ncurses.h>
 #include <csignal>
 #include <memory>
 #include <thread>
@@ -21,8 +22,8 @@ void sigHandler(int signal) {
 
 int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
-
   std::signal(SIGINT, sigHandler);
+  Gfx::instance().update();
 
   CavePtr cave;
   WormPtr w0rm;
@@ -30,24 +31,20 @@ int main(int argc, char** argv) {
 
   LOG(INFO) << "Starting...";
   try {
-    cave = std::make_shared<Cave>(1000);
+    cave = std::make_shared<Cave>();
     Position pos;
-    pos.x(100).y(100);
+    pos.x(cave->x() - 5).y(cave->y());
     nrg1 = std::make_shared<Powerhouse>(pos);
-    pos.x(cave->width() - 100).y(100);
+    pos.x(cave->x() + cave->width() + 5).y(cave->y());
     nrg2 = std::make_shared<Powerhouse>(pos);
     w0rm = std::make_shared<Worm>();
 
     std::set<EntityPtr> sources = {nrg1, nrg2};
     w0rm->energySources(sources);
-
     w0rm->energy(5);
-    cave->draw();
-    w0rm->draw();
-    nrg1->draw();
-    nrg2->draw();
 
-    for (;;) {
+    int ch;
+    do {
       LOG(INFO) << "Updating...";
       cave->draw();
       nrg1->update();
@@ -56,8 +53,10 @@ int main(int argc, char** argv) {
       nrg2->draw();
       w0rm->updateBrain();
       w0rm->draw();
+      Gfx::instance().update();
       std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+      ch = getch();
+    } while (ch != 'q');
 
   } catch (const std::exception& e) {
     LOG(ERROR) << "Aborting due to following error: " << e.what();
