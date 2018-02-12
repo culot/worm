@@ -1,5 +1,6 @@
 #include <glog/logging.h>
 #include <random>
+#include <string>
 
 #include "powerhouse.h"
 
@@ -29,6 +30,10 @@ void Powerhouse::update() {
 void Powerhouse::draw() {
   LOG(INFO) << "Drawing powerhouse at (x,y) (" << x() << "," << y() << ")";
   Gfx::instance().drawstr(position(), ":O:");
+  std::string info {"intensity ["};
+  info.append(std::to_string(value()));
+  info.append("]");
+  Gfx::instance().drawstr(position().y() + 2, position().x(), info);
 }
 
 }
