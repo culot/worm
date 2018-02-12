@@ -1,15 +1,28 @@
 #include <glog/logging.h>
 #include <ncurses.h>
 
+#include "gfx.h"
 #include "cave.h"
 
 
 namespace worm {
 
+Cave::Cave() : Drawable(), width_(COLS - 40) {
+  x(20);
+  y(10);
+  LOG(INFO) << "New cave created with origin position (" << y() << "," << x()
+            << ") and end position (" << y() << "," << width_ + x() << ")";
+}
+
 void Cave::draw() const {
   LOG(INFO) << "Drawing cave";
- // TODO implement
- // draw 2 exits holes
+  Gfx::instance().drawstr(position(), ")");
+  Gfx::instance().drawstr(position().y(), position().x() + width_, "(");
+  int xmin = position().x() + 1;
+  int xmax = position().x() + width_;
+  for (int x = xmin; x < xmax; ++x) {
+    Gfx::instance().drawch(position().y(), x, '_');
+  }
 }
 
 }

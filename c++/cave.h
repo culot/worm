@@ -2,12 +2,14 @@
 
 #include <memory>
 
+#include "drawable.h"
+
 
 namespace worm {
 
-class Cave {
+class Cave : public Drawable {
  public:
-  Cave(int width) : width_(width) {}
+  Cave();
   int width() const {return width_;}
   void draw() const;
 

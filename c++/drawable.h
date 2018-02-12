@@ -12,6 +12,7 @@ class Drawable {
    void x(int posX) {pos_.x(posX);}
    int y() const {return pos_.y();}
    void y(int posY) {pos_.y(posY);}
+   Position position() const {return pos_;}
    Direction direction() const {return dir_;}
    void direction(Direction dir) {dir_ = dir;}
    virtual void draw() {}

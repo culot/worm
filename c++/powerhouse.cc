@@ -27,7 +27,8 @@ void Powerhouse::update() {
 }
 
 void Powerhouse::draw() {
-  // TODO implement
+  LOG(INFO) << "Drawing powerhouse at (x,y) (" << x() << "," << y() << ")";
+  Gfx::instance().drawstr(position(), ":O:");
 }
 
 }
