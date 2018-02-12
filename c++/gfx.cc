@@ -28,7 +28,7 @@ Gfx::Gfx() {
   curs_set(0);
 
   box(win_, 0, 0);
-  wrefresh(win_);
+  wnoutrefresh(win_);
 
   refresh();
 }
@@ -44,7 +44,7 @@ void Gfx::drawstr(const Position& pos, const std::string& str) {
 
 void Gfx::drawstr(int y, int x, const std::string& str) {
   mvwaddstr(win_, y, x, str.c_str());
-  wrefresh(win_);
+  wnoutrefresh(win_);
 }
 
 void Gfx::drawch(const Position& pos, const chtype ch) {
@@ -53,7 +53,7 @@ void Gfx::drawch(const Position& pos, const chtype ch) {
 
 void Gfx::drawch(int y, int x, const chtype ch) {
   mvwaddch(win_, y, x, ch);
-  wrefresh(win_);
+  wnoutrefresh(win_);
 }
 
 // The curses library fails to handle two concurrent threads trying to
