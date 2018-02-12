@@ -7,7 +7,8 @@ namespace worm {
 
 void Brain::addNeuron(NeuronPtr& neuron) {
   neurons_.push_back(neuron);
-  LOG(INFO) << "Neuron added";
+  LOG(INFO) << "Neuron added in direction "
+            << (neuron->output() == Direction::right ? "[RIGHT]" : "[LEFT]");
 }
 
 int Brain::numberOfActiveNeurons() const {
