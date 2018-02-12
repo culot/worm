@@ -28,6 +28,15 @@ EntityPtr Worm::brightestEnergySource() const {
 void Worm::draw() {
   LOG(INFO) << "Drawing worm at position (" << position().y() << "," << position().x() << ")";
   Gfx::instance().drawch(position(), 'W');
+  std::string energy {"Energy: "};
+  energy.append(std::to_string(energy_));
+  Gfx::instance().drawstr(position().y() + 2, position().x(), energy);
+}
+
+void Worm::update() {
+  LOG(INFO) << "Updating worm";
+  updateBrain();
+  updatePosition();
 }
 
 void Worm::updateBrain() {
@@ -40,11 +49,25 @@ void Worm::updateBrain() {
   }
 }
 
+void Worm::updatePosition() {
+  Direction dir = brain_.direction();
+  if (dir == Direction::right) {
+    x(position().x() + 1);
+    LOG(INFO) << "Worm moving to RIGHT";
+  } else if (dir == Direction::left) {
+    x(position().x() - 1);
+    LOG(INFO) << "Worm moving to LEFT";
+  } else {
+    LOG(INFO) << "Worm not moving";
+  }
+}
+
 void Worm::createNeuron(EntityPtr in, EntityPtr out) {
   NeuronPtr neuron = std::make_shared<Neuron>();
   neuron->input(in);
   neuron->output(out);
   brain_.addNeuron(neuron);
+  --energy_;
 }
 
 }
