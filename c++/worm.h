@@ -13,6 +13,7 @@ namespace worm {
 
 class Worm : public Drawable {
  public:
+  Worm();
   void energy(int e) {energy_ = e;}
   int energy() const {return energy_;}
   void energySources(const std::set<EntityPtr>& sources) {energySources_ = sources;}

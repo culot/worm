@@ -5,6 +5,11 @@
 
 namespace worm {
 
+void Brain::addNeuron(NeuronPtr& neuron) {
+  neurons_.push_back(neuron);
+  LOG(INFO) << "Neuron added";
+}
+
 int Brain::numberOfActiveNeurons() const {
   int numActive {0};
   for (const auto& neuron : neurons_) {

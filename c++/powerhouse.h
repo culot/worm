@@ -8,7 +8,7 @@ namespace worm {
 
 class Powerhouse : public Entity {
  public:
-  Powerhouse(Position& pos) : Entity(pos) {intensity_ = getIntBetween(0, 9);}
+  Powerhouse(Position& pos);
   int value() const override {return intensity_;}
   void intensity(int value) {intensity_ = value;}
   void updateIntensity();

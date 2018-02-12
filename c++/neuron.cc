@@ -5,6 +5,10 @@
 
 namespace worm {
 
+Neuron::Neuron() {
+  LOG(INFO) << "Creating neuron";
+}
+
 Direction Neuron::output() const {
   int outputValue {0};
   for (const auto& output : output_) {

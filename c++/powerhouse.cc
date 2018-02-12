@@ -6,6 +6,11 @@
 
 namespace worm {
 
+Powerhouse::Powerhouse(Position& pos) : Entity(pos) {
+  intensity_ = getIntBetween(0, 9);
+  LOG(INFO) << "Creating powerhouse with intensity [" << intensity_ << "]";
+}
+
 int Powerhouse::getIntBetween(int minimum, int maximum) const {
   std::random_device rd;
   std::uniform_int_distribution<int> dist(minimum, maximum);

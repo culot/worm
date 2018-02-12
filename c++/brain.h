@@ -11,7 +11,7 @@ namespace worm {
 
 class Brain {
  public:
-  void addNeuron(NeuronPtr& neuron) {neurons_.push_back(neuron);}
+  void addNeuron(NeuronPtr& neuron);
   int size() const {return neurons_.size();}
   int numberOfActiveNeurons() const;
   Direction direction() const;

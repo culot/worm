@@ -11,6 +11,7 @@ namespace worm {
 
 class Neuron {
  public:
+  Neuron();
   void input(EntityPtr& in) {input_.insert(in);}
   void output(EntityPtr& out) {output_.insert(out);}
   Direction output() const;

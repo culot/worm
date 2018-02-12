@@ -9,6 +9,10 @@
 
 namespace worm {
 
+Worm::Worm() {
+  LOG(INFO) << "Creating worm";
+}
+
 EntityPtr Worm::brightestEnergySource() const {
   EntityPtr brightest;
   int maxIntensity {-1};
@@ -22,6 +26,7 @@ EntityPtr Worm::brightestEnergySource() const {
 }
 
 void Worm::draw() {
+  LOG(INFO) << "Drawing worm";
 }
 
 void Worm::updateBrain() {
