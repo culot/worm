@@ -12,7 +12,11 @@ Neuron::Neuron() {
 Direction Neuron::output() const {
   int outputValue {0};
   for (const auto& output : output_) {
-    outputValue += output->value();
+    if (output->direction() == Direction::right) {
+      outputValue += 1;
+    } else if (output->direction() == Direction::left) {
+      outputValue -= 1;
+    }
   }
   return outputValue > 0 ? Direction::right : Direction::left;
 }
