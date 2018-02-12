@@ -1,6 +1,8 @@
 #pragma once
 
-#include <curses.h>
+#include <mutex>
+#include <string>
+#include <ncurses.h>
 
 
 namespace worm {
@@ -11,7 +13,7 @@ enum class Direction {
   right
 };
 
-class Position {
+struct Position {
  public:
   enum class Label {
     topLeft,
@@ -62,6 +64,65 @@ class Position {
  private:
   int x_ {0};
   int y_ {0};
+};
+
+
+struct Style {
+
+  enum class Alignment {
+    left,
+    center,
+    right
+  };
+
+  enum Color {
+    none,
+    black,
+    cyan,
+    magenta,
+    red,
+    yellow,
+    blue,
+    cyanOnBlue
+  };
+
+  bool bold {false};
+  bool reverse {false};
+  bool underline {false};
+  bool highlight {false};
+  bool borders {false};
+  Alignment align {Alignment::left};
+  Color color {Color::none};
+
+  int cursesAttrs() const {
+    int s = A_NORMAL;
+    s |= bold ? A_BOLD : 0;
+    s |= reverse ? A_REVERSE : 0;
+    s |= underline ? A_UNDERLINE : 0;
+    s |= highlight ? A_STANDOUT : 0;
+    return s;
+  };
+};
+
+
+class Gfx {
+ public:
+  static Gfx& instance() {static Gfx instance_; return instance_;}
+
+  void drawstr(const Position& pos, const std::string& str);
+  void drawstr(int y, int x, const std::string& str);
+  void drawch(const Position&, const chtype ch);
+  void drawch(int y, int x, const chtype ch);
+  void update();
+
+ private:
+  std::mutex mutex_;
+  WINDOW* win_;
+
+  Gfx();
+  ~Gfx();
+  Gfx(const Gfx&) = delete;
+  void operator=(const Gfx&) = delete;
 };
 
 }
