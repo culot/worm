@@ -16,6 +16,7 @@ using EnergyPool = std::vector<EntityPtr>;
 class Worm : public Drawable {
  public:
   Worm();
+  void boundaries(const Position& min, const Position& max) {minPos_ = min; maxPos_ = max;}
   void energy(int e) {energy_ = e;}
   int energy() const {return energy_;}
   void energySources(const EnergyPool& sources) {energySources_ = sources;}
@@ -25,6 +26,8 @@ class Worm : public Drawable {
   void draw() override;
 
  private:
+  Position minPos_ {Position::Label::topLeft};
+  Position maxPos_ {Position::Label::bottomRight};
   int energy_ {0};
   Brain brain_;
   EnergyPool energySources_ {};

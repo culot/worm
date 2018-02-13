@@ -65,6 +65,7 @@ int main(int argc, char** argv) {
     pos.x(cave->x() + cave->width() + 5).y(cave->y());
     nrg2 = std::make_shared<Powerhouse>(pos);
     w0rm = std::make_shared<Worm>();
+    w0rm->boundaries(cave->leftBoundary(), cave->rightBoundary());
     w0rm->y(cave->y());
     w0rm->x(cave->width() / 2 + cave->x());
 

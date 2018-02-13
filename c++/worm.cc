@@ -48,12 +48,15 @@ void Worm::draw() {
   std::string energy {"Energy: "};
   energy.append(std::to_string(energy_));
   Gfx::instance().drawstr(position().y() - 2, position().x(), energy);
+  std::string neuronsno {"Nb neurons: "};
+  neuronsno.append(std::to_string(brain_.size()));
+  Gfx::instance().drawstr(position().y() - 3, position().x(), neuronsno);
   std::string metabolism {"Metabolism: "};
   metabolism.append(std::to_string(basalMetabolism()));
-  Gfx::instance().drawstr(position().y() - 3, position().x(), metabolism);
+  Gfx::instance().drawstr(position().y() - 4, position().x(), metabolism);
   std::string availableNrg {"Available energy: "};
   availableNrg.append(std::to_string(availableEnergy()));
-  Gfx::instance().drawstr(position().y() - 4, position().x(), availableNrg);
+  Gfx::instance().drawstr(position().y() - 5, position().x(), availableNrg);
 }
 
 void Worm::update() {
@@ -97,12 +100,21 @@ void Worm::updatePosition() {
   Direction dir = brain_.direction();
   if (dir == Direction::right) {
     x(position().x() + 1);
-    LOG(INFO) << "Worm moving to RIGHT";
+    LOG(INFO) << "Worm trying to move RIGHT";
   } else if (dir == Direction::left) {
     x(position().x() - 1);
-    LOG(INFO) << "Worm moving to LEFT";
+    LOG(INFO) << "Worm trying to move LEFT";
   } else {
     LOG(INFO) << "Worm not moving";
+  }
+
+  if (x() > maxPos_.x()) {
+    x(maxPos_.x());
+    LOG(INFO) << "Worm reached cave right boundary";
+  }
+  if (x() < minPos_.x()) {
+    x(minPos_.x());
+    LOG(INFO) << "Worm reached cave left boundary";
   }
 }
 
