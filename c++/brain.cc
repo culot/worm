@@ -26,7 +26,13 @@ Direction Brain::direction() const {
   for (const auto& neuron : neurons_) {
     direction += neuron->output() == Direction::right ? 1 : -1;
   }
-  return direction > 0 ? Direction::right : Direction::left;
+  if (direction > 0) {
+    return Direction::right;
+  } else if (direction < 0) {
+    return Direction::left;
+  } else {
+    return Direction::none;
+  }
 }
 
 }
