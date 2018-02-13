@@ -26,11 +26,6 @@ Gfx::Gfx() {
   nodelay(stdscr, TRUE);
   keypad(stdscr, TRUE);
   curs_set(0);
-
-  box(win_, 0, 0);
-  wnoutrefresh(win_);
-
-  refresh();
 }
 
 Gfx::~Gfx() {
@@ -41,6 +36,7 @@ Gfx::~Gfx() {
 void Gfx::clear() {
   werase(win_);
   box(win_, 0, 0);
+  wnoutrefresh(win_);
 }
 
 void Gfx::drawstr(const Position& pos, const std::string& str) {
