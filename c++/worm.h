@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include <set>
+#include <vector>
 
 #include "brain.h"
 #include "entity.h"
