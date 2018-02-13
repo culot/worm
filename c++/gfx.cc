@@ -1,3 +1,5 @@
+#include <glog/logging.h>
+
 #include "gfx.h"
 
 
@@ -29,8 +31,17 @@ Gfx::Gfx() {
 }
 
 Gfx::~Gfx() {
+  terminate();
+}
+
+void Gfx::terminate() {
   clear();
   endwin();
+  LOG(INFO) << "Graphics terminated";
+}
+
+void Gfx::init() {
+  LOG(INFO) << "Graphics initialized";
 }
 
 void Gfx::clear() {
