@@ -14,6 +14,22 @@ Worm::Worm() {
   LOG(INFO) << "Creating worm";
 }
 
+void Worm::metabolismCoef(float alpha) {
+  metabolismCoefAlpha_ = alpha;
+  LOG(INFO) << "Worm's metabolism coefficient alpha set to [" << alpha << "]";
+}
+
+void Worm::absorptionCoef(float beta) {
+  absorptionCoefBeta_ = beta;
+  LOG(INFO) << "Worm's absorption coefficient beta set to [" << beta << "]";
+}
+
+void Worm::absorptionMultiplicator(float gamma) {
+  absorptionMultiplicatorGamma_ = gamma;
+  LOG(INFO) << "Worm's absorption multiplicator gamma set to [" << gamma << "]";
+}
+
+
 bool Worm::haveSameBrightness(const EnergyPool& sources) const {
   if (sources.empty()) {
     return false;
@@ -81,11 +97,6 @@ void Worm::updateBrain() {
   }
 }
 
-// Energy level varies based on two mechanisms:
-//   - the worm's basal metabolism, function of the number of neurons in the brain:
-//       E -= aN, with N being the number of neurons
-//   - the distance d to an energy source, with:
-//       E += a * exp(-b * d)
 void Worm::updateEnergy() {
   float nrg = availableEnergy();
   LOG(INFO) << "Energy absorbed by worm: " << nrg;
@@ -129,13 +140,13 @@ float Worm::availableEnergy() {
   float nrg {0.};
   for (const auto source : energySources_) {
     int distance = std::abs(source->x() - x());
-    nrg += 5 * std::exp(-0.1 * distance);
+    nrg += absorptionCoefBeta_ * std::exp(-1 * absorptionMultiplicatorGamma_ * distance);
   }
   return nrg;
 }
 
 float Worm::basalMetabolism() {
-  float basalMetabolism {0.1f * brain_.size()};
+  float basalMetabolism {metabolismCoefAlpha_ * brain_.size()};
   return basalMetabolism;
 }
 

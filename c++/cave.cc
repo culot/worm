@@ -6,11 +6,9 @@
 
 namespace worm {
 
-Cave::Cave() : Drawable(), width_(COLS - 40) {
+Cave::Cave() : Drawable() {
   x(20);
   y(10);
-  LOG(INFO) << "New cave created with origin position (" << y() << "," << x()
-            << ") and end position (" << y() << "," << width_ + x() << ")";
 }
 
 Position Cave::leftBoundary() const {

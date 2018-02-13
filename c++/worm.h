@@ -23,6 +23,9 @@ class Worm : public Drawable {
   EntityPtr brightestEnergySource() const;
   void createNeuron(EntityPtr in, EntityPtr out);
   void update();
+  void metabolismCoef(float alpha);
+  void absorptionCoef(float beta);
+  void absorptionMultiplicator(float gamma);
   void draw() override;
 
  private:
@@ -31,6 +34,9 @@ class Worm : public Drawable {
   int energy_ {0};
   Brain brain_;
   EnergyPool energySources_ {};
+  float metabolismCoefAlpha_;
+  float absorptionCoefBeta_;
+  float absorptionMultiplicatorGamma_;
 
   void updateBrain();
   void updateEnergy();
