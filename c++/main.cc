@@ -66,7 +66,11 @@ int main(int argc, char** argv) {
       Gfx::instance().update();
       std::this_thread::sleep_for(std::chrono::seconds(1));
       ch = getch();
-    } while (ch != 'q');
+    } while (ch != 'q' && w0rm->energy() > 0);
+
+    if (w0rm->energy() == 0) {
+      LOG(INFO) << "Energy exhausted, worm dying :'(";
+    }
 
   } catch (const std::exception& e) {
     LOG(ERROR) << "Aborting due to following error: " << e.what();
