@@ -39,7 +39,7 @@ Gfx::~Gfx() {
 }
 
 void Gfx::clear() {
-  wclear(win_);
+  werase(win_);
   box(win_, 0, 0);
 }
 
