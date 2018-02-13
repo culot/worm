@@ -54,6 +54,13 @@ int main(int argc, char** argv) {
       nrg1->draw();
       nrg2->update();
       nrg2->draw();
+      if (nrg1->value() > nrg2->value()) {
+        LOG(INFO) << "Brighest energy source: LEFT";
+      } else if (nrg1->value() < nrg2->value()) {
+        LOG(INFO) << "Brighest energy source: RIGHT";
+      } else {
+        LOG(INFO) << "Energy sources are of equal brightness";
+      }
       w0rm->update();
       w0rm->draw();
       Gfx::instance().update();
