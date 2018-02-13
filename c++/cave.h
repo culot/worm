@@ -11,6 +11,7 @@ class Cave : public Drawable {
  public:
   Cave();
   int width() const {return width_;}
+  void width(int w) {width_ = w;}
   void draw() const;
 
  private:

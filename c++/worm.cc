@@ -46,7 +46,7 @@ void Worm::draw() {
   Gfx::instance().drawch(position(), 'W');
   std::string energy {"Energy: "};
   energy.append(std::to_string(energy_));
-  Gfx::instance().drawstr(position().y() + 2, position().x(), energy);
+  Gfx::instance().drawstr(position().y() - 2, position().x(), energy);
 }
 
 void Worm::update() {

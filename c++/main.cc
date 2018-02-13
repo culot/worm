@@ -1,5 +1,7 @@
 #include <glog/logging.h>
 #include <ncurses.h>
+#include <unistd.h>
+#include <iostream>
 #include <csignal>
 #include <memory>
 #include <thread>
@@ -20,18 +22,43 @@ void sigHandler(int signal) {
   exit(0);
 }
 
+void usage() {
+  std::cerr << "Usage: worm [-h] [-w <cave_width>]" << std::endl;
+  exit(1);
+}
+
 int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
   std::signal(SIGINT, sigHandler);
-  Gfx::instance().update();
+
+  int opt, caveWidth {0};
+  while ((opt = getopt(argc, argv, "hw:")) != -1) {
+    switch (opt) {
+      case 'w':
+        try {
+          caveWidth = std::stoi(optarg);
+        } catch (...) {
+          usage();
+        }
+        break;
+      case 'h':
+      default:
+        usage();
+    }
+  }
 
   CavePtr cave;
   WormPtr w0rm;
   PowerhousePtr nrg1, nrg2;
 
   LOG(INFO) << "Starting...";
+  Gfx::instance().update();
   try {
     cave = std::make_shared<Cave>();
+    if (caveWidth != 0) {
+      cave->width(caveWidth);
+      LOG(INFO) << "Cave width set to [" << caveWidth << "]";
+    }
     Position pos;
     pos.x(cave->x() - 5).y(cave->y());
     nrg1 = std::make_shared<Powerhouse>(pos);
@@ -39,7 +66,7 @@ int main(int argc, char** argv) {
     nrg2 = std::make_shared<Powerhouse>(pos);
     w0rm = std::make_shared<Worm>();
     w0rm->y(cave->y());
-    w0rm->x((cave->x() + cave->width()) / 2);
+    w0rm->x(cave->width() / 2 + cave->x());
 
     EnergyPool sources = {nrg1, nrg2};
     w0rm->energySources(sources);
