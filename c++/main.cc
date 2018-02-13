@@ -4,7 +4,7 @@
 #include <memory>
 #include <thread>
 #include <chrono>
-#include <set>
+#include <string>
 
 #include "gfx.h"
 #include "entity.h"
@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
     w0rm->energySources(sources);
     w0rm->energy(5);
 
-    int ch;
+    int ch, tick {0};
     do {
       LOG(INFO) << "Updating...";
       Gfx::instance().clear();
@@ -63,13 +63,16 @@ int main(int argc, char** argv) {
       }
       w0rm->update();
       w0rm->draw();
+      Gfx::instance().drawstr(1,1, std::string("Ellapsed time: ").append(std::to_string(tick)));
       Gfx::instance().update();
       std::this_thread::sleep_for(std::chrono::seconds(1));
       ch = getch();
+      ++tick;
     } while (ch != 'q' && w0rm->energy() > 0);
 
     if (w0rm->energy() == 0) {
       LOG(INFO) << "Energy exhausted, worm dying :'(";
+      LOG(INFO) << "Worm survived [" << tick << "] seconds";
     }
 
   } catch (const std::exception& e) {
