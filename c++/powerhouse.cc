@@ -21,6 +21,12 @@ int Powerhouse::getIntBetween(int minimum, int maximum) const {
 void Powerhouse::updateIntensity() {
   int delta = getIntBetween(-1, 1);
   intensity_ += delta;
+  if (intensity_ < 0) {
+    intensity_ = 0;
+  }
+  if (intensity_ > 9) {
+    intensity_ = 9;
+  }
 }
 
 void Powerhouse::update() {
