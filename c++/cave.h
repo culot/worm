@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "drawable.h"
+#include "gfx.h"
 
 
 namespace worm {
@@ -12,6 +13,8 @@ class Cave : public Drawable {
   Cave();
   int width() const {return width_;}
   void width(int w) {width_ = w;}
+  Position leftBoundary() const;
+  Position rightBoundary() const;
   void draw() const;
 
  private:

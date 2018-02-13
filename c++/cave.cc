@@ -1,7 +1,6 @@
 #include <glog/logging.h>
 #include <ncurses.h>
 
-#include "gfx.h"
 #include "cave.h"
 
 
@@ -12,6 +11,18 @@ Cave::Cave() : Drawable(), width_(COLS - 40) {
   y(10);
   LOG(INFO) << "New cave created with origin position (" << y() << "," << x()
             << ") and end position (" << y() << "," << width_ + x() << ")";
+}
+
+Position Cave::leftBoundary() const {
+  Position boundary;
+  boundary.x(x()).y(y());
+  return boundary;
+}
+
+Position Cave::rightBoundary() const {
+  Position boundary;
+  boundary.x(x() + width()).y(y());
+  return boundary;
 }
 
 void Cave::draw() const {
