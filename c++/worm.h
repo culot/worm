@@ -30,8 +30,11 @@ class Worm : public Drawable {
   EnergyPool energySources_ {};
 
   void updateBrain();
+  void updateEnergy();
   void updatePosition();
   bool haveSameBrightness(const EnergyPool& sources) const;
+  float availableEnergy();
+  float basalMetabolism();
 };
 
 using WormPtr = std::shared_ptr<Worm>;

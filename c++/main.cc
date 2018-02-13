@@ -97,7 +97,7 @@ int main(int argc, char** argv) {
       ++tick;
     } while (ch != 'q' && w0rm->energy() > 0);
 
-    if (w0rm->energy() == 0) {
+    if (w0rm->energy() <= 0) {
       LOG(INFO) << "Energy exhausted, worm dying :'(";
       LOG(INFO) << "Worm survived [" << tick << "] seconds";
     }
