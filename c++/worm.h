@@ -11,12 +11,14 @@
 
 namespace worm {
 
+using EnergyPool = std::vector<EntityPtr>;
+
 class Worm : public Drawable {
  public:
   Worm();
   void energy(int e) {energy_ = e;}
   int energy() const {return energy_;}
-  void energySources(const std::set<EntityPtr>& sources) {energySources_ = sources;}
+  void energySources(const EnergyPool& sources) {energySources_ = sources;}
   EntityPtr brightestEnergySource() const;
   void createNeuron(EntityPtr in, EntityPtr out);
   void update();
@@ -25,10 +27,11 @@ class Worm : public Drawable {
  private:
   int energy_ {0};
   Brain brain_;
-  std::set<EntityPtr> energySources_ {};
+  EnergyPool energySources_ {};
 
   void updateBrain();
   void updatePosition();
+  bool haveSameBrightness(const EnergyPool& sources) const;
 };
 
 using WormPtr = std::shared_ptr<Worm>;

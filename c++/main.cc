@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
     w0rm->y(cave->y());
     w0rm->x((cave->x() + cave->width()) / 2);
 
-    std::set<EntityPtr> sources = {nrg1, nrg2};
+    EnergyPool sources = {nrg1, nrg2};
     w0rm->energySources(sources);
     w0rm->energy(5);
 

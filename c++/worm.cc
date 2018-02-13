@@ -13,7 +13,23 @@ Worm::Worm() {
   LOG(INFO) << "Creating worm";
 }
 
+bool Worm::haveSameBrightness(const EnergyPool& sources) const {
+  if (sources.empty()) {
+    return false;
+  }
+  int value = (*sources.begin())->value();
+  for (const auto& source : sources) {
+    if (source->value() != value) {
+      return false;
+    }
+  }
+  return true;
+}
+
 EntityPtr Worm::brightestEnergySource() const {
+  if (haveSameBrightness(energySources_)) {
+    return nullptr;
+  }
   EntityPtr brightest;
   int maxIntensity {-1};
   for (const auto source : energySources_) {
@@ -43,7 +59,12 @@ void Worm::updateBrain() {
   if (energy_ > 0) {
     // We have some energy, let's create a neuron!
     EntityPtr energySource = brightestEnergySource();
+    if (energySource == nullptr) {
+      LOG(INFO) << "All sources have same brightness, doing nothing";
+      return;
+    }
     EntityPtr output = std::make_shared<Entity>();
+    LOG(INFO) << "Brightest energy source x pos: " << std::to_string(energySource->x());
     output->direction(energySource->x() > x() ? Direction::right : Direction::left);
     createNeuron(energySource, output);
   }
