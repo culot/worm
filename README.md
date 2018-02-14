@@ -53,14 +53,25 @@ it is destroyed (brain considers it is useless).
 it tries to move to this side by activating the needed muscles, based on
 the following algorithm:
 
-1. if the brain does not have any motor neuron connected to the side it
-   wants to move to, then it creates one, assuming it has enough energy
-2. if the brain already has a neuron connected to the side it wants to
-   move to, then it does not create any additional neuron
+  1. if the brain does not have any motor neuron connected to the side it
+     wants to move to, then it creates one, assuming it has enough energy
+  2. if the brain already has a neuron connected to the side it wants to
+     move to, then it does not create any additional neuron
 
 * when a motor neuron does not get triggered for more than a fixed amount
 of time, then it is destroyed (brain considers it useless)
 
 
---
+# Worm movement rules
+
+* When worm perceives a sufficient level of stimulus from one side,
+it tries to move in this direction by triggering its motor neuron linked
+to the muscle on this side.
+
+* When the energy the worm is able to absorb is sufficient, it stops
+moving.
+
+
+---
+
 [1] https://www.khanacademy.org/science/biology/human-biology/neuron-nervous-system/a/overview-of-neuron-structure-and-function
