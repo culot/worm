@@ -11,6 +11,8 @@ An attempt in modeling the roundworm's nervous system
 - [x] bound possible worm movements so it does not exit cave
 - [x] make functions parametrable on the fly
 - [ ] make the energy a float, to allow for more precision
+- [ ] introduce two neuron types (sensory / motor)
+- [ ] draw brain configuration (to show when neurons are created / destroyed)
 
 
 # Neurons creation / deletion rules
