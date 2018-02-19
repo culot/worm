@@ -24,7 +24,6 @@ class Worm : public Drawable {
   void createNeuron(EntityPtr in, EntityPtr out);
   void update();
   void metabolismCoef(float alpha);
-  void absorptionCoef(float beta);
   void absorptionMultiplicator(float gamma);
   void draw() override;
 
@@ -35,14 +34,15 @@ class Worm : public Drawable {
   Brain brain_;
   EnergyPool energySources_ {};
   float metabolismCoefAlpha_;
-  float absorptionCoefBeta_;
   float absorptionMultiplicatorGamma_;
 
   void updateBrain();
   void updateEnergy();
   void updatePosition();
   bool haveSameBrightness(const EnergyPool& sources) const;
-  float availableEnergy();
+  EntityPtr randomEnergySource() const;
+  float absorbableEnergy(EntityPtr source) const;
+  float absorbableEnergy();
   float basalMetabolism();
 };
 

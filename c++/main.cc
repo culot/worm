@@ -23,13 +23,13 @@ void sigHandler(int signal) {
 }
 
 void usage() {
-  std::cerr << "Usage: worm [-h] [-w <cave_width>] [-a <metabolism_coef>] [-b <absorption_coef>] [-g <absorption_multiplicator>]" << std::endl;
+  std::cerr << "Usage: worm [-h] [-w <cave_width>] [-a <metabolism_coef>] [-g <absorption_multiplicator>]" << std::endl;
   std::cerr << std::endl;
   std::cerr << "Energy level varies based on two mechanisms:" << std::endl;
   std::cerr << " - the worm's basal metabolism, function of the number of neurons in the brain:" << std::endl;
   std::cerr << "   E -= a * N, with N being the number of neurons" << std::endl;
-  std::cerr << " - the distance d to an energy source, with:" << std::endl;
-  std::cerr << "   E += b * exp(-g * d)" << std::endl;
+  std::cerr << " - the distance d to an energy source of intensity i, with:" << std::endl;
+  std::cerr << "   E += i * exp(-g * d)" << std::endl;
 
   exit(1);
 }
@@ -41,10 +41,9 @@ int main(int argc, char** argv) {
 
   int caveWidth {COLS - 40};
   float alpha {.1f};
-  float beta {5.f};
   float gamma {.1f};
   int opt;
-  while ((opt = getopt(argc, argv, "hw:a:b:g:")) != -1) {
+  while ((opt = getopt(argc, argv, "hw:a:g:")) != -1) {
     switch (opt) {
       case 'w':
         try {
@@ -61,15 +60,6 @@ int main(int argc, char** argv) {
         } catch (...) {
           Gfx::instance().terminate();
           std::cerr << "Invalid metabolism coefficient" << std::endl;
-          usage();
-        }
-        break;
-      case 'b':
-        try {
-          beta = std::stof(optarg);
-        } catch (...) {
-          Gfx::instance().terminate();
-          std::cerr << "Invalid absorption coefficient" << std::endl;
           usage();
         }
         break;
@@ -112,7 +102,6 @@ int main(int argc, char** argv) {
     w0rm->y(cave->y());
     w0rm->x(cave->width() / 2 + cave->x());
     w0rm->metabolismCoef(alpha);
-    w0rm->absorptionCoef(beta);
     w0rm->absorptionMultiplicator(gamma);
 
     EnergyPool sources = {nrg1, nrg2};

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <memory>
-#include <set>
 
 #include "entity.h"
 #include "gfx.h"
@@ -12,15 +11,17 @@ namespace worm {
 class Neuron {
  public:
   Neuron();
-  void input(EntityPtr& in) {input_.insert(in);}
-  void output(EntityPtr& out) {output_.insert(out);}
+  void input(EntityPtr& in) {input_ = in;}
+  EntityPtr input() const {return input_;}
+  void output(EntityPtr& out) {output_ = out;}
   Direction output() const;
   bool active() const {return active_;}
   int energy() const {return energy_;}
+  bool isConnectedTo(const EntityPtr& entity) const;
 
  private:
-  std::set<EntityPtr> input_ {};
-  std::set<EntityPtr> output_ {};
+  EntityPtr input_ {};
+  EntityPtr output_ {};
   bool active_ {false};
   int energy_ {0};
 };
