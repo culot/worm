@@ -13,9 +13,13 @@ void Brain::addNeuron(NeuronPtr& neuron) {
 
 void Brain::destroyAllNeurons() {
  neurons_.clear();
+ LOG(INFO) << "All neurons destroyed";
 }
 
 void Brain::destroyNeuronsConnectedTo(const EntityPtr& entity) {
+  if (size() == 0) {
+    return;
+  }
   for (auto it = neurons_.begin(); it != neurons_.end(); ) {
     if ((*it)->isConnectedTo(entity)) {
       it = neurons_.erase(it);

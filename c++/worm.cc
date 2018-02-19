@@ -98,22 +98,22 @@ void Worm::updateBrain() {
   // and destroys all neurons (not needed to move anymore)
   if (absorbableEnergy() > 1.f) {
     brain_.destroyAllNeurons();
-  }
-
-  // When worm does not get enough stimulus from one energy source,
-  // it destroys neurons linked to it
-  for (const auto& source : energySources_) {
-    if (absorbableEnergy(source) < 0.5f) {
-      brain_.destroyNeuronsConnectedTo(source);
+  } else {
+    // When worm does not get enough stimulus from one energy source,
+    // it destroys neurons linked to it
+    for (const auto& source : energySources_) {
+      if (absorbableEnergy(source) < 0.5f) {
+        brain_.destroyNeuronsConnectedTo(source);
+      }
     }
   }
 
   if (energy_ > 0 && absorbableEnergy() < 1.f) {
     EntityPtr input = brightestEnergySource();
-    if (!brain_.isConnectedTo(input)) {
+    if (input != nullptr && !brain_.isConnectedTo(input)) {
       EntityPtr output = std::make_shared<Entity>();
       output->direction(input->x() > x() ? Direction::right : Direction::left);
-        createNeuron(input, output);
+      createNeuron(input, output);
     }
   }
 }
