@@ -34,7 +34,7 @@ An attempt in modeling the roundworm's nervous system
 ## Worm movement rules
 
 * When at least a neuron is connected to a muscle, the worm moves in
-  the direction of the neuron's output. It 2 neurons are connected in
+  the direction of the neuron's output. If 2 neurons are connected in
   opposite direction, then the worm stays put.
 
 * When the energy the worm is able to absorb is sufficient, it stops
