@@ -121,11 +121,11 @@ void Worm::updateBrain() {
 void Worm::updateEnergy() {
   float nrg = absorbableEnergy();
   LOG(INFO) << "Energy absorbed by worm: " << nrg;
-  energy_ += std::floor(nrg);
+  energy_ += nrg;
 
   float metabolism = basalMetabolism();
   LOG(INFO) << "Basal metabolism consumed by worm: " << metabolism;
-  energy_ -= std::floor(metabolism);
+  energy_ -= metabolism;
 }
 
 void Worm::updatePosition() {

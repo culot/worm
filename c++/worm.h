@@ -17,8 +17,8 @@ class Worm : public Drawable {
  public:
   Worm();
   void boundaries(const Position& min, const Position& max) {minPos_ = min; maxPos_ = max;}
-  void energy(int e) {energy_ = e;}
-  int energy() const {return energy_;}
+  void energy(float e) {energy_ = e;}
+  float energy() const {return energy_;}
   void energySources(const EnergyPool& sources) {energySources_ = sources;}
   EntityPtr brightestEnergySource() const;
   void createNeuron(EntityPtr in, EntityPtr out);
@@ -30,7 +30,7 @@ class Worm : public Drawable {
  private:
   Position minPos_ {Position::Label::topLeft};
   Position maxPos_ {Position::Label::bottomRight};
-  int energy_ {0};
+  float energy_ {0.f};
   Brain brain_;
   EnergyPool energySources_ {};
   float metabolismCoefAlpha_;

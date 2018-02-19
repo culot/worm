@@ -106,7 +106,7 @@ int main(int argc, char** argv) {
 
     EnergyPool sources = {nrg1, nrg2};
     w0rm->energySources(sources);
-    w0rm->energy(5);
+    w0rm->energy(5.f);
 
     int ch, tick {0};
     do {

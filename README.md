@@ -10,9 +10,9 @@ An attempt in modeling the roundworm's nervous system
 - [x] introduce energy gain as function of 5 * exp (-0.1 * distanceToSource)
 - [x] bound possible worm movements so it does not exit cave
 - [x] make functions parametrable on the fly
-- [ ] make the energy a float, to allow for more precision
+- [x] make the energy a float, to allow for more precision
 - [ ] introduce two neuron types (sensory / motor)
-- [ ] draw brain configuration (to show when neurons are created / destroyed)
+- [x] draw brain configuration (to show when neurons are created / destroyed)
 
 
 # MODEL 1
