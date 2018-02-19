@@ -15,7 +15,35 @@ An attempt in modeling the roundworm's nervous system
 - [ ] draw brain configuration (to show when neurons are created / destroyed)
 
 
-# Neurons creation / deletion rules
+# MODEL 1
+
+## Neurons creation / deletion rules
+
+* when the worm has some energy left and it does not absorb enough
+  energy, it tries to create a neuron (if one does not already exist)
+  with its input linked to the brightest energy source, and output
+  linked to the muscle responsible for moving in the direction of this
+  brightest energy source.
+
+* when the worm does not get enough stimulus from one energy source,
+  then the neuron connected to it is destroyed
+
+* when the worm stops moving because it absorbs enough energy, it
+  destroys all neurons
+
+## Worm movement rules
+
+* When at least a neuron is connected to a muscle, the worm moves in
+  the direction of the neuron's output. It 2 neurons are connected in
+  opposite direction, then the worm stays put.
+
+* When the energy the worm is able to absorb is sufficient, it stops
+moving.
+
+
+# MODEL 2
+
+## Neurons creation / deletion rules
 
 Two types of neurons will be considered [1]:
 
@@ -26,7 +54,7 @@ Two types of neurons will be considered [1]:
    Those convey commands to muscles
 
 
-## Sensory neurons
+### Sensory neurons
 
 * neurons are only connected to a single source.
 Physically, receptors are far apart, one looking on left side,
@@ -47,7 +75,7 @@ on the following algorithm:
 it is destroyed (brain considers it is useless).
 
 
-## Motor neurons
+### Motor neurons
 
 * all motor neurons are connected to the brain
 
@@ -64,7 +92,7 @@ the following algorithm:
 of time, then it is destroyed (brain considers it useless)
 
 
-# Worm movement rules
+## Worm movement rules
 
 * When worm perceives a sufficient level of stimulus from one side,
 it tries to move in this direction by triggering its motor neuron linked
