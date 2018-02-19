@@ -2,6 +2,7 @@
 #include <memory>
 #include <cmath>
 
+#include "computils.h"
 #include "powerhouse.h"
 #include "neuron.h"
 #include "worm.h"
@@ -17,11 +18,6 @@ Worm::Worm() {
 void Worm::metabolismCoef(float alpha) {
   metabolismCoefAlpha_ = alpha;
   LOG(INFO) << "Worm's metabolism coefficient alpha set to [" << alpha << "]";
-}
-
-void Worm::absorptionCoef(float beta) {
-  absorptionCoefBeta_ = beta;
-  LOG(INFO) << "Worm's absorption coefficient beta set to [" << beta << "]";
 }
 
 void Worm::absorptionMultiplicator(float gamma) {
@@ -58,9 +54,24 @@ EntityPtr Worm::brightestEnergySource() const {
   return brightest;
 }
 
+EntityPtr Worm::randomEnergySource() const {
+  int energySourcesNum = energySources_.size();
+  int id = CompUtils::getIntBetween(0, energySourcesNum - 1);
+  return energySources_[id];
+}
+
 void Worm::draw() {
   LOG(INFO) << "Drawing worm at position (" << position().y() << "," << position().x() << ")";
-  Gfx::instance().drawch(position(), 'W');
+  Gfx::instance().drawch(position(), '@');
+  int numRight = brain_.numberOfNeuronsInDirection(Direction::right);
+  for (int i = 1; i <= numRight; ++i) {
+    Gfx::instance().drawch(position().y(), position().x() + i, '/');
+  }
+  int numLeft = brain_.numberOfNeuronsInDirection(Direction::left);
+  for (int i = 1; i <= numLeft; ++i) {
+    Gfx::instance().drawch(position().y(), position().x() - i, '\\');
+  }
+
   std::string energy {"Energy: "};
   energy.append(std::to_string(energy_));
   Gfx::instance().drawstr(position().y() - 2, position().x(), energy);
@@ -70,8 +81,8 @@ void Worm::draw() {
   std::string metabolism {"Metabolism: "};
   metabolism.append(std::to_string(basalMetabolism()));
   Gfx::instance().drawstr(position().y() - 4, position().x(), metabolism);
-  std::string availableNrg {"Available energy: "};
-  availableNrg.append(std::to_string(availableEnergy()));
+  std::string availableNrg {"Absorbable energy: "};
+  availableNrg.append(std::to_string(absorbableEnergy()));
   Gfx::instance().drawstr(position().y() - 5, position().x(), availableNrg);
 }
 
@@ -83,22 +94,32 @@ void Worm::update() {
 }
 
 void Worm::updateBrain() {
-  if (energy_ > 0) {
-    // We have some energy, let's create a neuron!
-    EntityPtr energySource = brightestEnergySource();
-    if (energySource == nullptr) {
-      LOG(INFO) << "All sources have same brightness, doing nothing";
-      return;
+  // When worm does absorb enough energy, it stays put
+  // and destroys all neurons (not needed to move anymore)
+  if (absorbableEnergy() > 1.f) {
+    brain_.destroyAllNeurons();
+  }
+
+  // When worm does not get enough stimulus from one energy source,
+  // it destroys neurons linked to it
+  for (const auto& source : energySources_) {
+    if (absorbableEnergy(source) < 0.5f) {
+      brain_.destroyNeuronsConnectedTo(source);
     }
-    EntityPtr output = std::make_shared<Entity>();
-    LOG(INFO) << "Brightest energy source x pos: " << std::to_string(energySource->x());
-    output->direction(energySource->x() > x() ? Direction::right : Direction::left);
-    createNeuron(energySource, output);
+  }
+
+  if (energy_ > 0 && absorbableEnergy() < 1.f) {
+    EntityPtr input = brightestEnergySource();
+    if (!brain_.isConnectedTo(input)) {
+      EntityPtr output = std::make_shared<Entity>();
+      output->direction(input->x() > x() ? Direction::right : Direction::left);
+        createNeuron(input, output);
+    }
   }
 }
 
 void Worm::updateEnergy() {
-  float nrg = availableEnergy();
+  float nrg = absorbableEnergy();
   LOG(INFO) << "Energy absorbed by worm: " << nrg;
   energy_ += std::floor(nrg);
 
@@ -108,6 +129,10 @@ void Worm::updateEnergy() {
 }
 
 void Worm::updatePosition() {
+  if (absorbableEnergy() > 1.f) {
+    return;
+  }
+
   Direction dir = brain_.direction();
   if (dir == Direction::right) {
     x(position().x() + 1);
@@ -136,11 +161,17 @@ void Worm::createNeuron(EntityPtr in, EntityPtr out) {
   brain_.addNeuron(neuron);
 }
 
-float Worm::availableEnergy() {
+float Worm::absorbableEnergy(EntityPtr source) const {
+  int distance = std::abs(source->x() - x());
+  float nrg = source->value() * std::exp(-1 * absorptionMultiplicatorGamma_ * distance);
+
+  return nrg;
+}
+
+float Worm::absorbableEnergy() {
   float nrg {0.};
   for (const auto source : energySources_) {
-    int distance = std::abs(source->x() - x());
-    nrg += absorptionCoefBeta_ * std::exp(-1 * absorptionMultiplicatorGamma_ * distance);
+    nrg += absorbableEnergy(source);
   }
   return nrg;
 }

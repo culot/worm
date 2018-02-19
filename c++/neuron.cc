@@ -10,6 +10,7 @@ Neuron::Neuron() {
 }
 
 Direction Neuron::output() const {
+/*
   int outputValue {0};
   for (const auto& output : output_) {
     if (output->direction() == Direction::right) {
@@ -19,6 +20,15 @@ Direction Neuron::output() const {
     }
   }
   return outputValue > 0 ? Direction::right : Direction::left;
+*/
+  return output_->direction();
+}
+
+bool Neuron::isConnectedTo(const EntityPtr& entity) const {
+  if (*input() == *entity) {
+    return true;
+  }
+  return false;
 }
 
 }

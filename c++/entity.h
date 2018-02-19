@@ -14,6 +14,10 @@ class Entity : public Drawable {
   Entity() : Drawable() {}
   Entity(Position& pos) : Drawable(pos) {}
   virtual int value() const {throw std::runtime_error("Must specialize value()");}
+
+  bool operator==(const Entity& rhs) {
+    return this->position() == rhs.position() && this->value() == rhs.value();
+  }
 };
 
 using EntityPtr = std::shared_ptr<Entity>;
