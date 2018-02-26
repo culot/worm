@@ -43,7 +43,8 @@ moving.
 
 # MODEL 2
 
-* if absorbable energy >= metabolism, do not move
+```
+if absorbable energy >= metabolism, do not move
   else
     energy loss = metabolism - absorbable energy
     lifetime = total energy / energy loss
@@ -54,6 +55,7 @@ moving.
     else
       destroy neurons
       hibernate
+```
 
 
 # MODEL 3
