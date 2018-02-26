@@ -43,6 +43,21 @@ moving.
 
 # MODEL 2
 
+* if absorbable energy >= metabolism, do not move
+  else
+    energy loss = metabolism - absorbable energy
+    lifetime = total energy / energy loss
+    if lifetime > time needed to reach energy source
+    then
+      create neuron connected to energy source
+      move to energy source
+    else
+      destroy neurons
+      hibernate
+
+
+# MODEL 3
+
 ## Neurons creation / deletion rules
 
 Two types of neurons will be considered [1]:
