@@ -94,26 +94,26 @@ void Worm::update() {
 }
 
 void Worm::updateBrain() {
-  // When worm does absorb enough energy, it stays put
-  // and destroys all neurons (not needed to move anymore)
-  if (absorbableEnergy() > 1.f) {
+  float absorbableEnergy = this->absorbableEnergy();
+  float metabolism = this->basalMetabolism();
+
+  if (absorbableEnergy >= metabolism) {
     brain_.destroyAllNeurons();
   } else {
-    // When worm does not get enough stimulus from one energy source,
-    // it destroys neurons linked to it
-    for (const auto& source : energySources_) {
-      if (absorbableEnergy(source) < 0.5f) {
-        brain_.destroyNeuronsConnectedTo(source);
+    float energyLoss = metabolism - absorbableEnergy;
+    int lifetime = std::floor(energy_ / energyLoss);
+    EntityPtr brightest = brightestEnergySource();
+    if (brightest == nullptr) {
+      LOG(INFO) << "Sources produce identical energy, doing nothing";
+    } else {
+      int distanceToBrightestSource = distanceToSource(brightest);
+      if (lifetime > distanceToBrightestSource && !brain_.isConnectedTo(brightest)) {
+        EntityPtr output = std::make_shared<Entity>();
+        output->direction(brightest->x() > x() ? Direction::right : Direction::left);
+        createNeuron(brightest, output);
+      } else {
+        brain_.destroyAllNeurons();
       }
-    }
-  }
-
-  if (energy_ > 0 && absorbableEnergy() < 1.f) {
-    EntityPtr input = brightestEnergySource();
-    if (input != nullptr && !brain_.isConnectedTo(input)) {
-      EntityPtr output = std::make_shared<Entity>();
-      output->direction(input->x() > x() ? Direction::right : Direction::left);
-      createNeuron(input, output);
     }
   }
 }
@@ -162,7 +162,7 @@ void Worm::createNeuron(EntityPtr in, EntityPtr out) {
 }
 
 float Worm::absorbableEnergy(EntityPtr source) const {
-  int distance = std::abs(source->x() - x());
+  int distance = distanceToSource(source);
   float nrg = source->value() * std::exp(-1 * absorptionMultiplicatorGamma_ * distance);
 
   return nrg;
@@ -179,6 +179,16 @@ float Worm::absorbableEnergy() {
 float Worm::basalMetabolism() {
   float basalMetabolism {metabolismCoefAlpha_ * brain_.size()};
   return basalMetabolism;
+}
+
+int Worm::distanceToSource(EntityPtr source) const {
+  int distance = std::abs(source->x() - x());
+  return distance;
+}
+
+int Worm::distanceToBrightestSource() const {
+  EntityPtr brightestSource = brightestEnergySource();
+  return distanceToSource(brightestSource);
 }
 
 }

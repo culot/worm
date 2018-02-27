@@ -44,6 +44,8 @@ class Worm : public Drawable {
   float absorbableEnergy(EntityPtr source) const;
   float absorbableEnergy();
   float basalMetabolism();
+  int distanceToSource(EntityPtr source) const;
+  int distanceToBrightestSource() const;
 };
 
 using WormPtr = std::shared_ptr<Worm>;
