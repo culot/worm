@@ -24,6 +24,7 @@ class Worm : public Drawable {
   void createNeuron(EntityPtr in, EntityPtr out);
   void update();
   void metabolismCoef(float alpha);
+  void metabolismConstant(float beta);
   void absorptionMultiplicator(float gamma);
   void draw() override;
 
@@ -34,6 +35,7 @@ class Worm : public Drawable {
   Brain brain_;
   EnergyPool energySources_ {};
   float metabolismCoefAlpha_;
+  float metabolismConstBeta_;
   float absorptionMultiplicatorGamma_;
 
   void updateBrain();

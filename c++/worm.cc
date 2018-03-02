@@ -20,6 +20,11 @@ void Worm::metabolismCoef(float alpha) {
   LOG(INFO) << "Worm's metabolism coefficient alpha set to [" << alpha << "]";
 }
 
+void Worm::metabolismConstant(float beta) {
+  metabolismConstBeta_ = beta;
+  LOG(INFO) << "Worm's metabolism constant beta set to [" << beta << "]";
+}
+
 void Worm::absorptionMultiplicator(float gamma) {
   absorptionMultiplicatorGamma_ = gamma;
   LOG(INFO) << "Worm's absorption multiplicator gamma set to [" << gamma << "]";
@@ -177,7 +182,7 @@ float Worm::absorbableEnergy() {
 }
 
 float Worm::basalMetabolism() {
-  float basalMetabolism {metabolismCoefAlpha_ * brain_.size()};
+  float basalMetabolism {metabolismCoefAlpha_ * brain_.size() + metabolismConstBeta_};
   return basalMetabolism;
 }
 
