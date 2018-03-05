@@ -7,8 +7,8 @@
 
 namespace worm {
 
-Powerhouse::Powerhouse(Position& pos) : Entity(pos) {
-  intensity_ = CompUtils::getIntBetween(0, 9);
+Powerhouse::Powerhouse(Position& pos, int maxIntensity) : Entity(pos), maxIntensity_(maxIntensity) {
+  intensity_ = CompUtils::getIntBetween(0, maxIntensity_);
   LOG(INFO) << "Creating powerhouse with intensity [" << intensity_ << "]";
 }
 
@@ -18,8 +18,8 @@ void Powerhouse::updateIntensity() {
   if (intensity_ < 0) {
     intensity_ = 0;
   }
-  if (intensity_ > 9) {
-    intensity_ = 9;
+  if (intensity_ > maxIntensity_) {
+    intensity_ = maxIntensity_;
   }
 }
 

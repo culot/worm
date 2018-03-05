@@ -23,13 +23,14 @@ void sigHandler(int signal) {
 }
 
 void usage() {
-  std::cerr << "Usage: worm [-h] [-w <cave_width>] [-a <metabolism_coef>] [-b <metabolism_constant>] [-g <absorption_multiplicator>]" << std::endl;
+  std::cerr << "Usage: worm [-h] [-w <cave_width>] [-a <metabolism_coef>] [-b <metabolism_constant>] [-g <absorption_multiplicator>] [-m max_intensity]" << std::endl;
   std::cerr << std::endl;
   std::cerr << "Energy level varies based on two mechanisms:" << std::endl;
   std::cerr << " - the worm's basal metabolism, function of the number of neurons in the brain:" << std::endl;
   std::cerr << "   E -= a * N + b, with N being the number of neurons" << std::endl;
   std::cerr << " - the distance d to an energy source of intensity i, with:" << std::endl;
   std::cerr << "   E += i * exp(-g * d)" << std::endl;
+  std::cerr << "The energy sources' max intensity can be set using the -m flag" << std::endl;
 
   exit(1);
 }
@@ -49,8 +50,9 @@ int main(int argc, char** argv) {
   float alpha {.1f};
   float beta {.5f};
   float gamma {.1f};
+  int maxIntensity {9};
   int opt;
-  while ((opt = getopt(argc, argv, "hw:a:b:g:")) != -1) {
+  while ((opt = getopt(argc, argv, "hw:a:b:g:m:")) != -1) {
     switch (opt) {
       case 'w':
         try {
@@ -79,6 +81,13 @@ int main(int argc, char** argv) {
           wrongUsage("Invalid absorption mulitplicator");
         }
         break;
+      case 'm':
+        try {
+          maxIntensity = std::stoi(optarg);
+        } catch (...) {
+          wrongUsage("Invalid maximum intensity");
+        }
+        break;
       case 'h':
       default:
         Gfx::instance().terminate();
@@ -100,9 +109,9 @@ int main(int argc, char** argv) {
 
     Position pos;
     pos.x(cave->x() - 5).y(cave->y());
-    nrg1 = std::make_shared<Powerhouse>(pos);
+    nrg1 = std::make_shared<Powerhouse>(pos, maxIntensity);
     pos.x(cave->x() + cave->width() + 5).y(cave->y());
-    nrg2 = std::make_shared<Powerhouse>(pos);
+    nrg2 = std::make_shared<Powerhouse>(pos, maxIntensity);
 
     w0rm = std::make_shared<Worm>();
     w0rm->boundaries(cave->leftBoundary(), cave->rightBoundary());
